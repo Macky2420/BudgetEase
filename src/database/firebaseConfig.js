@@ -1,7 +1,7 @@
 import { initializeApp } from 'firebase/app';
 import { getAnalytics } from 'firebase/analytics';
 import { getDatabase } from 'firebase/database';
-import { getAuth } from 'firebase/auth';
+import { getAuth, setPersistence, browserLocalPersistence  } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -20,4 +20,10 @@ const analytics = getAnalytics(app);
 const database = getDatabase(app);
 const auth = getAuth(app);
 
+// Set persistence to local storage
+setPersistence(auth, browserLocalPersistence)
+  .catch((error) => {
+    console.error('Error setting persistence:', error);
+  });
+  
 export { app, analytics, database, auth };  
