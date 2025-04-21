@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useOutlet, useNavigate } from 'react-router-dom';
-import { Layout, Button, Spin, Dropdown, Menu, message } from 'antd';
+import { Layout, Button, Spin, Dropdown, message } from 'antd';
 import { MenuOutlined, HomeOutlined, UserOutlined, LogoutOutlined } from '@ant-design/icons';
 import { auth } from '../database/firebaseConfig';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 
-const { Header, Content } = Layout;
+const { Header, Content, Footer } = Layout;
 
 const AppLayout = () => {
   const outlet = useOutlet();
@@ -28,7 +28,7 @@ const AppLayout = () => {
   }, [navigate]);
 
   const handleMenuClick = (key) => {
-    switch(key) {
+    switch (key) {
       case 'home':
         navigate(`/home/${user?.uid}`);
         break;
@@ -49,40 +49,28 @@ const AppLayout = () => {
   };
 
   const menuItems = [
-    {
-      key: 'home',
-      label: 'Home',
-      icon: <HomeOutlined />,
-    },
-    {
-      key: 'user-info',
-      label: 'User Info',
-      icon: <UserOutlined />,
-    },
-    {
-      type: 'divider',
-    },
-    {
-      key: 'logout',
-      label: 'Logout',
-      icon: <LogoutOutlined />,
-      danger: true,
-    }
+    { key: 'home', label: 'Home', icon: <HomeOutlined /> },
+    { key: 'user-info', label: 'User Info', icon: <UserOutlined /> },
+    { type: 'divider' },
+    { key: 'logout', label: 'Logout', icon: <LogoutOutlined />, danger: true }
   ];
 
   const menuProps = {
     items: menuItems,
     onClick: ({ key }) => handleMenuClick(key),
-    style: { 
-      minWidth: '160px', 
-      borderRadius: '8px', 
-      padding: '8px 0' 
+    style: {
+      minWidth: '160px',
+      borderRadius: '8px',
+      padding: '8px 0'
     },
   };
 
   if (!authChecked) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div style={{
+        display: 'flex', justifyContent: 'center',
+        alignItems: 'center', height: '100vh'
+      }}>
         <Spin size="large" />
       </div>
     );
@@ -111,23 +99,23 @@ const AppLayout = () => {
         }}>
           BudgetEase
         </div>
-        
+
         <Dropdown menu={menuProps} trigger={['click']}>
-          <Button 
-            type="text" 
-            icon={<MenuOutlined style={{ fontSize: '20px' }} />} 
+          <Button
+            type="text"
+            icon={<MenuOutlined style={{ fontSize: '20px' }} />}
             style={{ color: '#595959' }}
           />
         </Dropdown>
       </Header>
 
-      <Content style={{ 
-        padding: '24px', 
+      <Content style={{
+        padding: '24px',
         backgroundColor: '#f8f9fa',
-        minHeight: 'calc(100vh - 64px)'
+        flex: '1 0 auto'
       }}>
-        <div style={{ 
-          maxWidth: '1200px', 
+        <div style={{
+          maxWidth: '1200px',
           margin: '0 auto',
           backgroundColor: '#ffffff',
           borderRadius: '8px',
@@ -137,6 +125,16 @@ const AppLayout = () => {
           {outlet}
         </div>
       </Content>
+
+      <Footer style={{
+        textAlign: 'center',
+        backgroundColor: '#d1d5db',
+        padding: '16px 0'
+      }}>
+        <p style={{ fontSize: '0.875rem', color: '#1f2937' }}>
+          © 2025 - All rights reserved by FRANCIS IVAN BATICAN
+        </p>
+      </Footer>
     </Layout>
   );
 };
